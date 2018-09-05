@@ -24,7 +24,7 @@ namespace Ado.Net
         private static void SelectCountBooks()
         {
             sqlConnection = new SqlConnection(connectionString);
-            string Select = "Select count(Book_id) from books;";
+            string Select = "Select count(ID_BOOK) from books;";
             string Select2 = "Select * from Books;";
             try
             {
@@ -32,14 +32,20 @@ namespace Ado.Net
                 sqlCommand = new SqlCommand(Select, sqlConnection);
                 int count = Convert.ToInt32(sqlCommand.ExecuteScalar());
                 int PageSum = 0;
+                double PriceSum = 0;
                 sqlCommand.CommandText = Select2;
                 sqlReader = sqlCommand.ExecuteReader();
                 for (int i = 0; i < count; i++)
                 {
                     sqlReader.Read();
                     PageSum += Convert.ToInt32(sqlReader["Pages"]);
+                    PriceSum += Convert.ToDouble(sqlReader["Price"]);
+                    Console.WriteLine($"{sqlReader[0]}: {sqlReader[1]}; {sqlReader[2]}; {sqlReader[3]}; {sqlReader[4]}; {sqlReader[7]}; {sqlReader[8]};");
+                    //я не извлекаю дату публикации и обложку, очень большая запись получаеться(
                 }
-                Console.WriteLine(PageSum);
+                Console.WriteLine();
+                Console.WriteLine("Sum Pages = " + PageSum);
+                Console.WriteLine("Sum Price = " + PriceSum);
             }
             catch (Exception ex)
             {
